@@ -97,7 +97,7 @@ st.markdown("""
     /* Tab 樣式 */
     .stTabs [data-baseweb="tab"] { 
         color: #33691E !important; 
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Nunito', 'Noto Sans TC', sans-serif;
         font-size: 18px;
         font-weight: 700;
     }
@@ -111,7 +111,7 @@ st.markdown("""
         border: 2px solid #2E7D32 !important; 
         background: #FFFFFF !important; 
         color: #1B5E20 !important; 
-        font-family: 'Nunito', sans-serif !important;
+        font-family: 'Nunito', 'Noto Sans TC', sans-serif !important;
         font-size: 18px !important;
         font-weight: 700 !important;
         width: 100%; 
@@ -138,7 +138,7 @@ st.markdown("""
         font-weight: bold; 
         font-size: 14px; 
         margin-right: 10px; 
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Nunito', 'Noto Sans TC', sans-serif;
     }
     
     /* 翻譯區塊 */
@@ -166,14 +166,14 @@ def get_html_card(item, type="word"):
         .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #2E7D32; cursor: pointer; margin: 0 3px; color: #1B5E20; transition: 0.3s; font-size: 19px; font-weight: 600; }}
         .interactive-word:hover {{ color: #E65100; border-bottom-color: #E65100; }}
         
-        .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #1B5E20; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Nunito', sans-serif; font-weight: 700; }}
+        .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #1B5E20; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Nunito', 'Noto Sans TC', sans-serif; font-weight: 700; }}
         .interactive-word:hover .tooltip-text {{ visibility: visible; opacity: 1; }}
         
         .play-btn-inline {{ background: #2E7D32; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
         .play-btn-inline:hover {{ background: #E65100; transform: scale(1.1); }}
         
         .word-card-static {{ background: #FFFFFF; border: 1px solid #A5D6A7; border-left: 6px solid #1B5E20; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
-        .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', sans-serif; }}
+        .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', 'Noto Sans TC', sans-serif; }}
         .wc-amis {{ color: #1B5E20; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
         .wc-zh {{ color: #5D4037; font-size: 16px; font-weight: 500; }}
         .play-btn-large {{ background: #F1F8E9; border: 2px solid #1B5E20; color: #1B5E20; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
@@ -325,7 +325,7 @@ def play_audio_backend(text):
         tts = gTTS(text=text, lang='id'); fp = BytesIO(); tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
     except: pass
 
-# --- 5. UI 呈現層 (修正重點：直接寫死樣式) ---
+# --- 5. UI 呈現層 (修正重點：字體支援與正確渲染) ---
 st.markdown("""
 <div style="
     background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); 
@@ -338,7 +338,7 @@ st.markdown("""
     position: relative;">
     
     <h1 style="
-        font-family: 'Nunito', sans-serif; 
+        font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; 
         color: #FFFFFF !important; 
         font-size: 50px; 
         font-weight: 900; 
@@ -351,7 +351,7 @@ st.markdown("""
     <div style="
         color: #FFD54F !important; 
         font-size: 18px; 
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
         font-weight: 700;
         background: rgba(0, 0, 0, 0.3); 
         padding: 5px 20px;
