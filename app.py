@@ -86,77 +86,40 @@ STORY_DATA = [
     {"amis": "Tada maso'so' ko nanom no 'alo.", "zh": "河水非常清澈。"}
 ]
 
-# --- 2. 視覺系統 (CSS 注入 - High Contrast Wilderness Theme) ---
+# --- 2. 視覺系統 (CSS 注入 - 強制高對比版) ---
 st.markdown("""
     <style>
-    /* 引入 Nunito (自然親切) 和 Noto Sans TC */
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
     
-    /* 背景：晨曦白綠 */
+    /* 背景 */
     .stApp { background-color: #F1F8E9; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; }
     
-    /* 頭部：森林風格 (高對比版) */
-    .header-container { 
-        background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); /* 加深背景色 */
-        border-bottom: 6px solid #5D4037; 
-        border-radius: 15px; 
-        padding: 30px; 
-        text-align: center; 
-        margin-bottom: 30px; 
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-        position: relative;
-    }
-    
-    .main-title { 
-        font-family: 'Nunito', sans-serif; 
-        color: #FFFFFF; 
-        font-size: 46px; 
-        font-weight: 900;
-        margin-bottom: 10px; 
-        text-shadow: 2px 2px 0px #000000; /* 強烈陰影確保可讀性 */
-        letter-spacing: 1px;
-    }
-    
-    .sub-title { 
-        color: #FFD54F; /* 改為亮黃色，與深綠形成高對比 */
-        font-size: 18px; 
-        font-family: 'Nunito', sans-serif;
-        font-weight: 700;
-        background: rgba(0, 0, 0, 0.3); /* 深色半透明背景 */
-        padding: 5px 20px;
-        border-radius: 20px;
-        display: inline-block;
-        border: 1px solid #FFD54F;
-    }
-    
-    /* Tab 樣式：加深文字顏色 */
+    /* Tab 樣式 */
     .stTabs [data-baseweb="tab"] { 
-        color: #33691E !important; /* 深橄欖綠，閱讀更清晰 */
+        color: #33691E !important; 
         font-family: 'Nunito', sans-serif;
         font-size: 18px;
         font-weight: 700;
     }
     .stTabs [aria-selected="true"] { 
         border-bottom: 4px solid #2E7D32 !important; 
-        color: #1B5E20 !important; /* 選中時為最深綠 */
+        color: #1B5E20 !important; 
     }
     
-    /* 按鈕：深綠文字 */
+    /* 按鈕 */
     .stButton>button { 
         border: 2px solid #2E7D32 !important; 
         background: #FFFFFF !important; 
-        color: #1B5E20 !important; /* 加深文字 */
+        color: #1B5E20 !important; 
         font-family: 'Nunito', sans-serif !important;
         font-size: 18px !important;
         font-weight: 700 !important;
         width: 100%; 
         border-radius: 12px; 
-        transition: 0.2s; 
     }
     .stButton>button:hover { 
         background: #2E7D32 !important; 
         color: #FFFFFF !important; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
     /* 測驗卡片 */
@@ -166,7 +129,6 @@ st.markdown("""
         padding: 25px; 
         border-radius: 12px; 
         margin-bottom: 20px; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .quiz-tag { 
         background: #5D4037; 
@@ -184,17 +146,15 @@ st.markdown("""
         background: #E8F5E9;
         border-left: 5px solid #2E7D32;
         padding: 20px;
-        margin-top: 0px; 
-        color: #1B5E20; /* 最深綠，確保閱讀舒適 */
+        color: #1B5E20; 
         font-size: 16px;
         line-height: 2.0;
         font-family: 'Noto Sans TC', monospace;
-        border-radius: 0 8px 8px 0;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. 核心技術：沙盒渲染引擎 (v9.9 - Wilderness High Contrast) ---
+# --- 3. 核心技術：沙盒渲染引擎 ---
 def get_html_card(item, type="word"):
     pt = "100px" if type == "full_amis_block" else "80px"
     mt = "-40px" if type == "full_amis_block" else "-30px" 
@@ -203,7 +163,6 @@ def get_html_card(item, type="word"):
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
         body {{ background-color: transparent; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 5px; padding-top: {pt}; overflow-x: hidden; }}
         
-        /* 互動單字：加深底線顏色 */
         .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #2E7D32; cursor: pointer; margin: 0 3px; color: #1B5E20; transition: 0.3s; font-size: 19px; font-weight: 600; }}
         .interactive-word:hover {{ color: #E65100; border-bottom-color: #E65100; }}
         
@@ -213,7 +172,6 @@ def get_html_card(item, type="word"):
         .play-btn-inline {{ background: #2E7D32; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
         .play-btn-inline:hover {{ background: #E65100; transform: scale(1.1); }}
         
-        /* 單字卡樣式 */
         .word-card-static {{ background: #FFFFFF; border: 1px solid #A5D6A7; border-left: 6px solid #1B5E20; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
         .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', sans-serif; }}
         .wc-amis {{ color: #1B5E20; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
@@ -367,12 +325,45 @@ def play_audio_backend(text):
         tts = gTTS(text=text, lang='id'); fp = BytesIO(); tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
     except: pass
 
-# --- 5. UI 呈現層 ---
+# --- 5. UI 呈現層 (修正重點：直接寫死樣式) ---
 st.markdown("""
-<div class="header-container">
-    <h1 class="main-title">O Hekal</h1>
-    <div class="sub-title">第 9 課：大自然</div>
-    <div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">Code-CRF v6.4 | Theme: Wilderness High Contrast</div>
+<div style="
+    background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); 
+    border-bottom: 6px solid #5D4037; 
+    border-radius: 15px; 
+    padding: 30px; 
+    text-align: center; 
+    margin-bottom: 30px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    position: relative;">
+    
+    <h1 style="
+        font-family: 'Nunito', sans-serif; 
+        color: #FFFFFF !important; 
+        font-size: 50px; 
+        font-weight: 900; 
+        margin-bottom: 10px; 
+        text-shadow: 3px 3px 0 #000000; 
+        letter-spacing: 2px;">
+        O Hekal
+    </h1>
+    
+    <div style="
+        color: #FFD54F !important; 
+        font-size: 18px; 
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        background: rgba(0, 0, 0, 0.3); 
+        padding: 5px 20px;
+        border-radius: 20px;
+        display: inline-block;
+        border: 1px solid #FFD54F;">
+        第 9 課：大自然
+    </div>
+    
+    <div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">
+        Code-CRF v6.4 | Theme: Wilderness High Contrast
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
