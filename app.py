@@ -6,14 +6,14 @@ import time
 from gtts import gTTS
 from io import BytesIO
 
-# --- 0. 系統配置 (System Configuration) ---
+# --- 0. 系統配置 ---
 st.set_page_config(
     page_title="O Hekal - 大自然", 
     page_icon="🏞️", 
     layout="centered"
 )
 
-# --- 1. 資料庫 (第 9 課：O Hekal - 修訂版) ---
+# --- 1. 資料庫 ---
 VOCAB_MAP = {
     "ira": "有", "ko": "主格標記", "lotok": "山", "i": "在", 
     "hekal": "外面/大自然", "'alo": "河流", "sasi'ayaw": "正前方/對面", 
@@ -86,73 +86,20 @@ STORY_DATA = [
     {"amis": "Tada maso'so' ko nanom no 'alo.", "zh": "河水非常清澈。"}
 ]
 
-# --- 2. 視覺系統 (CSS 注入 - 強制高對比版) ---
+# --- 2. 視覺系統 (CSS 注入 - 移除縮排以修復顯示) ---
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
-    
-    /* 背景 */
-    .stApp { background-color: #F1F8E9; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; }
-    
-    /* Tab 樣式 */
-    .stTabs [data-baseweb="tab"] { 
-        color: #33691E !important; 
-        font-family: 'Nunito', 'Noto Sans TC', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-    }
-    .stTabs [aria-selected="true"] { 
-        border-bottom: 4px solid #2E7D32 !important; 
-        color: #1B5E20 !important; 
-    }
-    
-    /* 按鈕 */
-    .stButton>button { 
-        border: 2px solid #2E7D32 !important; 
-        background: #FFFFFF !important; 
-        color: #1B5E20 !important; 
-        font-family: 'Nunito', 'Noto Sans TC', sans-serif !important;
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        width: 100%; 
-        border-radius: 12px; 
-    }
-    .stButton>button:hover { 
-        background: #2E7D32 !important; 
-        color: #FFFFFF !important; 
-    }
-    
-    /* 測驗卡片 */
-    .quiz-card { 
-        background: #FFFFFF; 
-        border: 2px solid #81C784; 
-        padding: 25px; 
-        border-radius: 12px; 
-        margin-bottom: 20px; 
-    }
-    .quiz-tag { 
-        background: #5D4037; 
-        color: #FFF; 
-        padding: 4px 12px; 
-        border-radius: 4px; 
-        font-weight: bold; 
-        font-size: 14px; 
-        margin-right: 10px; 
-        font-family: 'Nunito', 'Noto Sans TC', sans-serif;
-    }
-    
-    /* 翻譯區塊 */
-    .zh-translation-block {
-        background: #E8F5E9;
-        border-left: 5px solid #2E7D32;
-        padding: 20px;
-        color: #1B5E20; 
-        font-size: 16px;
-        line-height: 2.0;
-        font-family: 'Noto Sans TC', monospace;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
+.stApp { background-color: #F1F8E9; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; }
+.stTabs [data-baseweb="tab"] { color: #33691E !important; font-family: 'Nunito', 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 700; }
+.stTabs [aria-selected="true"] { border-bottom: 4px solid #2E7D32 !important; color: #1B5E20 !important; }
+.stButton>button { border: 2px solid #2E7D32 !important; background: #FFFFFF !important; color: #1B5E20 !important; font-family: 'Nunito', 'Noto Sans TC', sans-serif !important; font-size: 18px !important; font-weight: 700 !important; width: 100%; border-radius: 12px; }
+.stButton>button:hover { background: #2E7D32 !important; color: #FFFFFF !important; }
+.quiz-card { background: #FFFFFF; border: 2px solid #81C784; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
+.quiz-tag { background: #5D4037; color: #FFF; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 14px; margin-right: 10px; font-family: 'Nunito', 'Noto Sans TC', sans-serif; }
+.zh-translation-block { background: #E8F5E9; border-left: 5px solid #2E7D32; padding: 20px; color: #1B5E20; font-size: 16px; line-height: 2.0; font-family: 'Noto Sans TC', monospace; }
+</style>
+""", unsafe_allow_html=True)
 
 # --- 3. 核心技術：沙盒渲染引擎 ---
 def get_html_card(item, type="word"):
@@ -162,23 +109,18 @@ def get_html_card(item, type="word"):
     style_block = f"""<style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
         body {{ background-color: transparent; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 5px; padding-top: {pt}; overflow-x: hidden; }}
-        
         .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #2E7D32; cursor: pointer; margin: 0 3px; color: #1B5E20; transition: 0.3s; font-size: 19px; font-weight: 600; }}
         .interactive-word:hover {{ color: #E65100; border-bottom-color: #E65100; }}
-        
         .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #1B5E20; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Nunito', 'Noto Sans TC', sans-serif; font-weight: 700; }}
         .interactive-word:hover .tooltip-text {{ visibility: visible; opacity: 1; }}
-        
         .play-btn-inline {{ background: #2E7D32; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
         .play-btn-inline:hover {{ background: #E65100; transform: scale(1.1); }}
-        
         .word-card-static {{ background: #FFFFFF; border: 1px solid #A5D6A7; border-left: 6px solid #1B5E20; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
         .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', 'Noto Sans TC', sans-serif; }}
         .wc-amis {{ color: #1B5E20; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
         .wc-zh {{ color: #5D4037; font-size: 16px; font-weight: 500; }}
         .play-btn-large {{ background: #F1F8E9; border: 2px solid #1B5E20; color: #1B5E20; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
         .play-btn-large:hover {{ background: #1B5E20; color: #FFF; }}
-        
         .amis-full-block {{ line-height: 2.2; font-size: 18px; margin-top: {mt}; }}
         .sentence-row {{ margin-bottom: 12px; display: block; }}
     </style>
@@ -325,47 +267,12 @@ def play_audio_backend(text):
         tts = gTTS(text=text, lang='id'); fp = BytesIO(); tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
     except: pass
 
-# --- 5. UI 呈現層 (修正重點：字體支援與正確渲染) ---
-st.markdown("""
-<div style="
-    background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); 
-    border-bottom: 6px solid #5D4037; 
-    border-radius: 15px; 
-    padding: 30px; 
-    text-align: center; 
-    margin-bottom: 30px; 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    position: relative;">
-    
-    <h1 style="
-        font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; 
-        color: #FFFFFF !important; 
-        font-size: 50px; 
-        font-weight: 900; 
-        margin-bottom: 10px; 
-        text-shadow: 3px 3px 0 #000000; 
-        letter-spacing: 2px;">
-        O Hekal
-    </h1>
-    
-    <div style="
-        color: #FFD54F !important; 
-        font-size: 18px; 
-        font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-        font-weight: 700;
-        background: rgba(0, 0, 0, 0.3); 
-        padding: 5px 20px;
-        border-radius: 20px;
-        display: inline-block;
-        border: 1px solid #FFD54F;">
-        第 9 課：大自然
-    </div>
-    
-    <div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">
-        Code-CRF v6.4 | Theme: Wilderness High Contrast
-    </div>
-</div>
-""", unsafe_allow_html=True)
+# --- 5. UI 呈現層 (修正重點：移除 HTML 字串內的縮排) ---
+st.markdown("""<div style="background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); border-bottom: 6px solid #5D4037; border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 30px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); position: relative;">
+<h1 style="font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; color: #FFFFFF !important; font-size: 50px; font-weight: 900; margin-bottom: 10px; text-shadow: 3px 3px 0 #000000; letter-spacing: 2px;">O Hekal</h1>
+<div style="color: #FFD54F !important; font-size: 18px; font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; font-weight: 700; background: rgba(0, 0, 0, 0.3); padding: 5px 20px; border-radius: 20px; display: inline-block; border: 1px solid #FFD54F;">第 9 課：大自然</div>
+<div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">Code-CRF v6.4 | Theme: Wilderness High Contrast</div>
+</div>""", unsafe_allow_html=True)
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "🏞️ 互動課文", 
