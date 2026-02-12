@@ -86,7 +86,7 @@ STORY_DATA = [
     {"amis": "Tada maso'so' ko nanom no 'alo.", "zh": "河水非常清澈。"}
 ]
 
-# --- 2. 視覺系統 (CSS 注入 - 移除縮排以修復顯示) ---
+# --- 2. 視覺系統 (CSS 注入 - 全域設定) ---
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
@@ -267,12 +267,59 @@ def play_audio_backend(text):
         tts = gTTS(text=text, lang='id'); fp = BytesIO(); tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
     except: pass
 
-# --- 5. UI 呈現層 (修正重點：移除 HTML 字串內的縮排) ---
-st.markdown("""<div style="background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); border-bottom: 6px solid #5D4037; border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 30px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); position: relative;">
-<h1 style="font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; color: #FFFFFF !important; font-size: 50px; font-weight: 900; margin-bottom: 10px; text-shadow: 3px 3px 0 #000000; letter-spacing: 2px;">O Hekal</h1>
-<div style="color: #FFD54F !important; font-size: 18px; font-family: 'Nunito', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; font-weight: 700; background: rgba(0, 0, 0, 0.3); padding: 5px 20px; border-radius: 20px; display: inline-block; border: 1px solid #FFD54F;">第 9 課：大自然</div>
-<div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">Code-CRF v6.4 | Theme: Wilderness High Contrast</div>
-</div>""", unsafe_allow_html=True)
+# --- 5. UI 呈現層 (修正重點：使用 components.html 隔離渲染標題) ---
+# 這裡使用 iframe 技術，Streamlit 的 CSS 無法干擾這裡面的顏色
+header_html = """
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&family=Noto+Sans+TC:wght@700&display=swap');
+        body { margin: 0; padding: 0; background-color: transparent; font-family: 'Noto Sans TC', sans-serif; text-align: center; }
+        .container {
+            background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%);
+            border-bottom: 6px solid #5D4037;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            color: #FFFFFF; /* 強制白色 */
+        }
+        h1 {
+            font-family: 'Nunito', sans-serif;
+            color: #FFFFFF !important; /* 強制白色 */
+            font-size: 48px;
+            margin: 0 0 10px 0;
+            text-shadow: 3px 3px 0 #000000;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            color: #FFD54F; /* 強制亮黃色 */
+            border: 1px solid #FFD54F;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 5px 20px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .footer {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #A5D6A7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>O Hekal</h1>
+        <div class="subtitle">第 9 課：大自然</div>
+        <div class="footer">Code-CRF v6.5 | Theme: Wilderness High Contrast</div>
+    </div>
+</body>
+</html>
+"""
+
+components.html(header_html, height=220)
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "🏞️ 互動課文", 
@@ -336,4 +383,4 @@ with tab4:
         if st.button("🔄 重新挑戰 (Reboot)"): del st.session_state.quiz_questions; st.rerun()
 
 st.markdown("---")
-st.caption("Powered by Code-CRF v6.4 | Architecture: Chief Architect")
+st.caption("Powered by Code-CRF v6.5 | Architecture: Chief Architect")
