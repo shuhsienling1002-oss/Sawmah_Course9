@@ -86,7 +86,7 @@ STORY_DATA = [
     {"amis": "Tada maso'so' ko nanom no 'alo.", "zh": "河水非常清澈。"}
 ]
 
-# --- 2. 視覺系統 (CSS 注入 - Wilderness Green Theme) ---
+# --- 2. 視覺系統 (CSS 注入 - High Contrast Wilderness Theme) ---
 st.markdown("""
     <style>
     /* 引入 Nunito (自然親切) 和 Noto Sans TC */
@@ -95,15 +95,15 @@ st.markdown("""
     /* 背景：晨曦白綠 */
     .stApp { background-color: #F1F8E9; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; }
     
-    /* 頭部：森林風格 */
+    /* 頭部：森林風格 (高對比版) */
     .header-container { 
-        background: linear-gradient(180deg, #2E7D32 0%, #1B5E20 100%); 
-        border-bottom: 6px solid #795548; /* 大地色底邊 */
+        background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%); /* 加深背景色 */
+        border-bottom: 6px solid #5D4037; 
         border-radius: 15px; 
         padding: 30px; 
         text-align: center; 
         margin-bottom: 30px; 
-        box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
         position: relative;
     }
     
@@ -112,39 +112,40 @@ st.markdown("""
         color: #FFFFFF; 
         font-size: 46px; 
         font-weight: 900;
-        margin-bottom: 5px; 
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 10px; 
+        text-shadow: 2px 2px 0px #000000; /* 強烈陰影確保可讀性 */
         letter-spacing: 1px;
     }
     
     .sub-title { 
-        color: #C8E6C9; 
+        color: #FFD54F; /* 改為亮黃色，與深綠形成高對比 */
         font-size: 18px; 
         font-family: 'Nunito', sans-serif;
         font-weight: 700;
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(0, 0, 0, 0.3); /* 深色半透明背景 */
         padding: 5px 20px;
         border-radius: 20px;
         display: inline-block;
+        border: 1px solid #FFD54F;
     }
     
-    /* Tab 樣式：自然圓潤 */
+    /* Tab 樣式：加深文字顏色 */
     .stTabs [data-baseweb="tab"] { 
-        color: #558B2F !important; 
+        color: #33691E !important; /* 深橄欖綠，閱讀更清晰 */
         font-family: 'Nunito', sans-serif;
         font-size: 18px;
         font-weight: 700;
     }
     .stTabs [aria-selected="true"] { 
         border-bottom: 4px solid #2E7D32 !important; 
-        color: #2E7D32 !important; 
+        color: #1B5E20 !important; /* 選中時為最深綠 */
     }
     
-    /* 按鈕：橄欖綠 */
+    /* 按鈕：深綠文字 */
     .stButton>button { 
-        border: 2px solid #558B2F !important; 
+        border: 2px solid #2E7D32 !important; 
         background: #FFFFFF !important; 
-        color: #558B2F !important; 
+        color: #1B5E20 !important; /* 加深文字 */
         font-family: 'Nunito', sans-serif !important;
         font-size: 18px !important;
         font-weight: 700 !important;
@@ -153,22 +154,22 @@ st.markdown("""
         transition: 0.2s; 
     }
     .stButton>button:hover { 
-        background: #558B2F !important; 
+        background: #2E7D32 !important; 
         color: #FFFFFF !important; 
-        box-shadow: 0 4px 8px rgba(85, 139, 47, 0.3);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
-    /* 測驗卡片：木質風格 */
+    /* 測驗卡片 */
     .quiz-card { 
         background: #FFFFFF; 
-        border: 2px solid #A5D6A7; 
+        border: 2px solid #81C784; 
         padding: 25px; 
         border-radius: 12px; 
         margin-bottom: 20px; 
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .quiz-tag { 
-        background: #795548; 
+        background: #5D4037; 
         color: #FFF; 
         padding: 4px 12px; 
         border-radius: 4px; 
@@ -178,13 +179,13 @@ st.markdown("""
         font-family: 'Nunito', sans-serif;
     }
     
-    /* 翻譯區塊：筆記本風格 */
+    /* 翻譯區塊 */
     .zh-translation-block {
         background: #E8F5E9;
         border-left: 5px solid #2E7D32;
         padding: 20px;
         margin-top: 0px; 
-        color: #33691E;
+        color: #1B5E20; /* 最深綠，確保閱讀舒適 */
         font-size: 16px;
         line-height: 2.0;
         font-family: 'Noto Sans TC', monospace;
@@ -193,7 +194,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. 核心技術：沙盒渲染引擎 (v9.9 - Wilderness Edition) ---
+# --- 3. 核心技術：沙盒渲染引擎 (v9.9 - Wilderness High Contrast) ---
 def get_html_card(item, type="word"):
     pt = "100px" if type == "full_amis_block" else "80px"
     mt = "-40px" if type == "full_amis_block" else "-30px" 
@@ -202,23 +203,23 @@ def get_html_card(item, type="word"):
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
         body {{ background-color: transparent; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 5px; padding-top: {pt}; overflow-x: hidden; }}
         
-        /* 互動單字：森林綠底線 */
-        .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #81C784; cursor: pointer; margin: 0 3px; color: #2E7D32; transition: 0.3s; font-size: 19px; font-weight: 500; }}
-        .interactive-word:hover {{ color: #0288D1; border-bottom-color: #0288D1; }}
+        /* 互動單字：加深底線顏色 */
+        .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #2E7D32; cursor: pointer; margin: 0 3px; color: #1B5E20; transition: 0.3s; font-size: 19px; font-weight: 600; }}
+        .interactive-word:hover {{ color: #E65100; border-bottom-color: #E65100; }}
         
-        .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #2E7D32; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-family: 'Nunito', sans-serif; font-weight: 700; }}
+        .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #1B5E20; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Nunito', sans-serif; font-weight: 700; }}
         .interactive-word:hover .tooltip-text {{ visibility: visible; opacity: 1; }}
         
         .play-btn-inline {{ background: #2E7D32; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
-        .play-btn-inline:hover {{ background: #0288D1; transform: scale(1.1); }}
+        .play-btn-inline:hover {{ background: #E65100; transform: scale(1.1); }}
         
-        /* 單字卡樣式 - 自然卡片 */
-        .word-card-static {{ background: #FFFFFF; border: 1px solid #C8E6C9; border-left: 6px solid #2E7D32; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
-        .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #2E7D32; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', sans-serif; }}
-        .wc-amis {{ color: #2E7D32; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
-        .wc-zh {{ color: #795548; font-size: 16px; }}
-        .play-btn-large {{ background: #F1F8E9; border: 2px solid #2E7D32; color: #2E7D32; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
-        .play-btn-large:hover {{ background: #2E7D32; color: #FFF; }}
+        /* 單字卡樣式 */
+        .word-card-static {{ background: #FFFFFF; border: 1px solid #A5D6A7; border-left: 6px solid #1B5E20; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
+        .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', sans-serif; }}
+        .wc-amis {{ color: #1B5E20; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
+        .wc-zh {{ color: #5D4037; font-size: 16px; font-weight: 500; }}
+        .play-btn-large {{ background: #F1F8E9; border: 2px solid #1B5E20; color: #1B5E20; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
+        .play-btn-large:hover {{ background: #1B5E20; color: #FFF; }}
         
         .amis-full-block {{ line-height: 2.2; font-size: 18px; margin-top: {mt}; }}
         .sentence-row {{ margin-bottom: 12px; display: block; }}
@@ -234,7 +235,7 @@ def get_html_card(item, type="word"):
         v = item
         body = f"""<div class="word-card-static">
             <div>
-                <div style="margin-bottom:5px;"><span class="wc-root-tag">ROOT: {v['root']}</span> <span style="font-size:12px; color:#9E9E9E;">({v['root_zh']})</span></div>
+                <div style="margin-bottom:5px;"><span class="wc-root-tag">ROOT: {v['root']}</span> <span style="font-size:12px; color:#757575;">({v['root_zh']})</span></div>
                 <div class="wc-amis">{v['emoji']} {v['amis']}</div>
                 <div class="wc-zh">{v['zh']}</div>
             </div>
@@ -285,7 +286,7 @@ def get_html_card(item, type="word"):
             parts.append(chunk)
             
         full_js = s['amis'].replace("'", "\\'")
-        body = f'<div style="font-size: 18px; line-height: 1.6; margin-top: {mt};">{" ".join(parts)}</div><button style="margin-top:10px; background:#0288D1; border:none; color:#FFF; padding:6px 15px; border-radius:8px; cursor:pointer; font-family:Nunito; font-weight:700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onclick="speak(`{full_js}`)">▶ PLAY AUDIO</button>'
+        body = f'<div style="font-size: 18px; line-height: 1.6; margin-top: {mt};">{" ".join(parts)}</div><button style="margin-top:10px; background:#1B5E20; border:none; color:#FFF; padding:6px 15px; border-radius:8px; cursor:pointer; font-family:Nunito; font-weight:700; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" onclick="speak(`{full_js}`)">▶ PLAY AUDIO</button>'
 
     return header + body + "</body></html>"
 
@@ -353,7 +354,7 @@ def generate_quiz():
         opts = [correct_ans] + random.sample(distractors, 2)
         random.shuffle(opts)
         
-        questions.append({"type": "cloze", "tag": "🕳️ 文法克漏字", "text": f"請填空：<br><span style='color:#0288D1; font-size:18px;'>{q_text}</span><br><span style='color:#795548; font-size:14px;'>{q7['zh']}</span>", "correct": correct_ans, "options": opts})
+        questions.append({"type": "cloze", "tag": "🕳️ 文法克漏字", "text": f"請填空：<br><span style='color:#1B5E20; font-size:18px;'>{q_text}</span><br><span style='color:#5D4037; font-size:14px;'>{q7['zh']}</span>", "correct": correct_ans, "options": opts})
     else:
         questions.append(questions[0]) 
 
@@ -371,7 +372,7 @@ st.markdown("""
 <div class="header-container">
     <h1 class="main-title">O Hekal</h1>
     <div class="sub-title">第 9 課：大自然</div>
-    <div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">Code-CRF v6.4 | Theme: Wilderness Green</div>
+    <div style="font-size: 12px; margin-top:10px; color:#C8E6C9; font-family: 'Nunito', sans-serif;">Code-CRF v6.4 | Theme: Wilderness High Contrast</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -386,7 +387,7 @@ with tab1:
     st.markdown("### // 文章閱讀")
     st.caption("👆 點擊單字可聽發音並查看翻譯")
     
-    st.markdown("""<div style="background:#FFFFFF; padding:10px; border: 2px solid #C8E6C9; border-radius:12px;">""", unsafe_allow_html=True)
+    st.markdown("""<div style="background:#FFFFFF; padding:10px; border: 2px solid #A5D6A7; border-radius:12px;">""", unsafe_allow_html=True)
     components.html(get_html_card(STORY_DATA, type="full_amis_block"), height=400, scrolling=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -405,11 +406,11 @@ with tab2:
 with tab3:
     st.markdown("### // 語法結構分析")
     for s in SENTENCES:
-        st.markdown("""<div style="background:#FFFFFF; padding:15px; border:1px dashed #558B2F; border-radius: 12px; margin-bottom:15px;">""", unsafe_allow_html=True)
+        st.markdown("""<div style="background:#FFFFFF; padding:15px; border:1px dashed #2E7D32; border-radius: 12px; margin-bottom:15px;">""", unsafe_allow_html=True)
         components.html(get_html_card(s, type="sentence"), height=160)
         st.markdown(f"""
         <div style="color:#1B5E20; font-size:16px; margin-bottom:10px; border-top:1px solid #C8E6C9; padding-top:10px;">{s['zh']}</div>
-        <div style="color:#558B2F; font-size:14px; line-height:1.8; border-top:1px dashed #C8E6C9; padding-top:5px;"><span style="color:#2E7D32; font-family:Nunito; font-weight:bold;">ANALYSIS:</span> {s.get('note', '')}</div>
+        <div style="color:#2E7D32; font-size:14px; line-height:1.8; border-top:1px dashed #C8E6C9; padding-top:5px;"><span style="color:#1B5E20; font-family:Nunito; font-weight:bold;">ANALYSIS:</span> {s.get('note', '')}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -420,7 +421,7 @@ with tab4:
     
     if st.session_state.quiz_step < len(st.session_state.quiz_questions):
         q = st.session_state.quiz_questions[st.session_state.quiz_step]
-        st.markdown(f"""<div class="quiz-card"><div style="margin-bottom:10px;"><span class="quiz-tag">{q['tag']}</span> <span style="color:#795548;">Q{st.session_state.quiz_step + 1}</span></div><div style="font-size:18px; color:#1B5E20; margin-bottom:10px;">{q['text']}</div></div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div class="quiz-card"><div style="margin-bottom:10px;"><span class="quiz-tag">{q['tag']}</span> <span style="color:#5D4037;">Q{st.session_state.quiz_step + 1}</span></div><div style="font-size:18px; color:#1B5E20; margin-bottom:10px;">{q['text']}</div></div>""", unsafe_allow_html=True)
         if 'audio' in q: play_audio_backend(q['audio'])
         opts = q['options']; cols = st.columns(min(len(opts), 3))
         for i, opt in enumerate(opts):
@@ -433,7 +434,7 @@ with tab4:
                         if 'note' in q: st.info(q['note'])
                     time.sleep(1.5); st.session_state.quiz_step += 1; st.rerun()
     else:
-        st.markdown(f"""<div style="text-align:center; padding:30px; border:4px solid #2E7D32; border-radius:15px; background:#FFFFFF;"><h2 style="color:#2E7D32; font-family:Nunito;">MISSION COMPLETE</h2><p style="font-size:20px; color:#1B5E20;">得分: {st.session_state.quiz_score} / {len(st.session_state.quiz_questions)}</p></div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div style="text-align:center; padding:30px; border:4px solid #1B5E20; border-radius:15px; background:#FFFFFF;"><h2 style="color:#1B5E20; font-family:Nunito;">MISSION COMPLETE</h2><p style="font-size:20px; color:#2E7D32;">得分: {st.session_state.quiz_score} / {len(st.session_state.quiz_questions)}</p></div>""", unsafe_allow_html=True)
         if st.button("🔄 重新挑戰 (Reboot)"): del st.session_state.quiz_questions; st.rerun()
 
 st.markdown("---")
