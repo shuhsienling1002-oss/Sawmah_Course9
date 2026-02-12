@@ -8,121 +8,249 @@ from io import BytesIO
 
 # --- 0. 系統配置 ---
 st.set_page_config(
-    page_title="O Hekal - 大自然", 
-    page_icon="🏞️", 
+    page_title="第 9 課 - 海 O riyar", 
+    page_icon="🦞", 
     layout="centered"
 )
 
-# --- 1. 資料庫 ---
+# --- 1. 資料庫 (自然環境 第 9 課) ---
 VOCAB_MAP = {
-    "ira": "有", "ko": "主格標記", "lotok": "山", "i": "在", 
-    "hekal": "外面/大自然", "'alo": "河流", "sasi'ayaw": "正前方/對面", 
-    "no": "的(屬格)", "fangcal": "漂亮/好", "ayam": "鳥", 
-    "a": "連接詞", "ma'efer": "飛", "tada": "非常/真正", 
-    "maso'so'": "清澈/乾淨", "nanom": "水", "cidal": "太陽"
+    "o": "是/主格", "maan": "什麼", "ko": "主格標記", "paro": "內容物",
+    "no": "的", "riyar": "海", "ira": "有", "foting": "魚",
+    "cekiw": "貝類", "ato": "和", "'orang": "龍蝦", "i": "在",
+    "pina": "多少(數量)", "wa'ay": "腳", "mo^etep": "十",
+    "masamaan": "怎麼樣(狀態)", "nanomen": "喝(受事)", "arenim": "鹹"
 }
 
 VOCABULARY = [
-    {"amis": "hekal", "zh": "外面/大自然", "emoji": "🏞️", "root": "hekal", "root_zh": "外"},
-    {"amis": "lotok", "zh": "山", "emoji": "⛰️", "root": "lotok", "root_zh": "山"},
-    {"amis": "'alo", "zh": "河流", "emoji": "🌊", "root": "'alo", "root_zh": "河"},
-    {"amis": "fangcal", "zh": "漂亮/好", "emoji": "✨", "root": "fangcal", "root_zh": "善/美"},
-    {"amis": "ayam", "zh": "鳥", "emoji": "🐦", "root": "ayam", "root_zh": "鳥"},
-    {"amis": "ma'efer", "zh": "飛", "emoji": "🦅", "root": "'efer", "root_zh": "飛"},
-    {"amis": "maso'so'", "zh": "清澈/乾淨", "emoji": "💧", "root": "so'so'", "root_zh": "洗"},
-    {"amis": "tada", "zh": "非常/真正", "emoji": "❗", "root": "tada", "root_zh": "真"},
-    {"amis": "sasi'ayaw", "zh": "正前方", "emoji": "👀", "root": "'ayaw", "root_zh": "前"},
-    {"amis": "nanom", "zh": "水", "emoji": "🚰", "root": "nanom", "root_zh": "水"},
+    {"amis": "riyar", "zh": "海/海洋", "emoji": "🌊", "root": "riyar", "root_zh": "海"},
+    {"amis": "paro", "zh": "內容物/裡面", "emoji": "📦", "root": "paro", "root_zh": "裝"},
+    {"amis": "cekiw", "zh": "貝類", "emoji": "🐚", "root": "cekiw", "root_zh": "貝"},
+    {"amis": "'orang", "zh": "龍蝦/蝦", "emoji": "🦞", "root": "'orang", "root_zh": "蝦"},
+    {"amis": "pina", "zh": "多少(問數量)", "emoji": "🔢", "root": "pina", "root_zh": "幾"},
+    {"amis": "arenim", "zh": "鹹的", "emoji": "🧂", "root": "arenim", "root_zh": "鹹"},
+    {"amis": "masamaan", "zh": "怎麼樣(狀態)", "emoji": "❓", "root": "samaan", "root_zh": "樣"},
 ]
 
 SENTENCES = [
     {
-        "amis": "Ira ko lotok i hekal.", 
-        "zh": "外面有山。", 
+        "amis": "O maan ko paro no riyar?", 
+        "zh": "海裡面有什麼？(海的內容物是什麼？)", 
         "note": """
-        <br><b>Ira</b>：有 (存在動詞)。
-        <br><b>hekal</b>：外面/戶外/大自然。
-        <br><b>句型</b>：Ira ko [物品] i [地點]。"""
+        <br><b>Paro</b>：內容物 (裝在裡面的東西)。
+        <br>💡 <b>比較</b>：
+        <br>🔹 <i>I labu</i>：強調「位置」在裡面。
+        <br>🔹 <i>O paro</i>：強調「東西」是什麼。"""
     },
     {
-        "amis": "Ira ko 'alo i sasi'ayaw no lotok.", 
-        "zh": "山的前面有河流。", 
+        "amis": "Ira ko foting, cekiw ato 'orang i riyar.", 
+        "zh": "海裡有魚、貝類和龍蝦。", 
         "note": """
-        <br><b>sasi'ayaw</b>：正前方/對面 (比 <i>'ayaw</i> 更具體)。
-        <br><b>no lotok</b>：山的 (屬格)。
-        <br><b>畫面</b>：河在山的正前方流過。"""
+        <br><b>ato</b>：和/與 (連接詞)。
+        <br>用來連接名詞：A <i>ato</i> B <i>ato</i> C。
+        <br><b>Ira</b>：有 (存在動詞)。"""
     },
     {
-        "amis": "Fangcal ko hekal.", 
-        "zh": "風景很漂亮。", 
+        "amis": "Pina ko wa'ay no 'orang?", 
+        "zh": "龍蝦有幾隻腳？", 
         "note": """
-        <br><b>Fangcal</b>：漂亮/美好。
-        <br><b>hekal</b>：這裡指風景/景色。
-        <br><b>注意</b>：通用詞，也可用於形容人好、天氣好。"""
+        <br><b>Pina</b>：多少？(詢問數量專用)。
+        <br><b>Wa'ay</b>：腳/腿。
+        <br>這是數學課或自然課的標準問句。"""
     },
     {
-        "amis": "Ira ko ayam a ma'efer.", 
-        "zh": "有鳥在飛。", 
+        "amis": "Mo^etep ko wa'ay no 'orang.", 
+        "zh": "龍蝦有十隻腳。", 
         "note": """
-        <br><b>ayam</b>：鳥。
-        <br><b>ma'efer</b>：飛 (動作)。
-        <br><b>結構</b>：Ira... a [動作] (有...在做某事)。"""
+        <br><b>Mo^etep</b>：十 (基數詞)。
+        <br>回答數量時，直接用數字取代 <i>Pina</i> 即可。"""
     },
     {
-        "amis": "Tada maso'so' ko nanom no 'alo.", 
-        "zh": "河水非常清澈。", 
+        "amis": "Masamaan nanomen ko nanom no riyar?", 
+        "zh": "海水的味道喝起來怎麼樣？", 
         "note": """
-        <br><b>Tada</b>：非常 (程度副詞，置於形容詞前)。
-        <br><b>maso'so'</b>：清澈 (原意為被洗淨的)。
-        <br><b>nanom no 'alo</b>：河水。"""
+        <br><b>Masamaan</b>：怎麼樣 (詢問狀態)。
+        <br><b>Nanom-en</b>：被喝/去喝 (處置焦點)。
+        <br>直譯：海水被喝的時候，狀態是如何？"""
+    },
+    {
+        "amis": "Arenim a nanomen.", 
+        "zh": "喝起來是鹹的。", 
+        "note": """
+        <br><b>Arenim</b>：鹹的。
+        <br><b>結構</b>：<i>[形容詞] a [動詞]</i>。
+        <br>表示做這個動作時的感覺。"""
     }
 ]
 
 STORY_DATA = [
-    {"amis": "Ira ko lotok i hekal.", "zh": "外面有山。"},
-    {"amis": "Ira ko 'alo i sasi'ayaw no lotok.", "zh": "山的前面有河流。"},
-    {"amis": "Fangcal ko hekal.", "zh": "風景很漂亮。"},
-    {"amis": "Ira ko ayam a ma'efer.", "zh": "有鳥在飛。"},
-    {"amis": "Tada maso'so' ko nanom no 'alo.", "zh": "河水非常清澈。"}
+    {"amis": "O maan ko paro no riyar?", "zh": "海裡面有什麼？"},
+    {"amis": "Ira ko foting, cekiw ato 'orang.", "zh": "有魚、貝類和龍蝦。"},
+    {"amis": "Pina ko wa'ay no 'orang?", "zh": "龍蝦有幾隻腳？"},
+    {"amis": "Mo^etep ko wa'ay no 'orang.", "zh": "龍蝦有十隻腳。"},
+    {"amis": "Masamaan nanomen ko nanom?", "zh": "水喝起來怎麼樣？"},
+    {"amis": "Arenim a nanomen.", "zh": "喝起來是鹹的。"}
 ]
 
-# --- 2. 視覺系統 (CSS 注入 - 全域設定) ---
+# --- 2. 視覺系統 (CSS 注入 - 風格：Deep Sea Explorer) ---
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
-.stApp { background-color: #F1F8E9; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; }
-.stTabs [data-baseweb="tab"] { color: #33691E !important; font-family: 'Nunito', 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 700; }
-.stTabs [aria-selected="true"] { border-bottom: 4px solid #2E7D32 !important; color: #1B5E20 !important; }
-.stButton>button { border: 2px solid #2E7D32 !important; background: #FFFFFF !important; color: #1B5E20 !important; font-family: 'Nunito', 'Noto Sans TC', sans-serif !important; font-size: 18px !important; font-weight: 700 !important; width: 100%; border-radius: 12px; }
-.stButton>button:hover { background: #2E7D32 !important; color: #FFFFFF !important; }
-.quiz-card { background: #FFFFFF; border: 2px solid #81C784; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
-.quiz-tag { background: #5D4037; color: #FFF; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 14px; margin-right: 10px; font-family: 'Nunito', 'Noto Sans TC', sans-serif; }
-.zh-translation-block { background: #E8F5E9; border-left: 5px solid #2E7D32; padding: 20px; color: #1B5E20; font-size: 16px; line-height: 2.0; font-family: 'Noto Sans TC', monospace; }
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Noto+Sans+TC:wght@400;700&display=swap');
+
+/* 全局背景：深海漸層 */
+.stApp { 
+    background: linear-gradient(180deg, #0288D1 0%, #01579B 60%, #002F6C 100%); 
+    color: #E1F5FE; 
+    font-family: 'Noto Sans TC', sans-serif; 
+}
+
+/* Tab 樣式：像衝浪板或鵝卵石 */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: rgba(255,255,255,0.1);
+    padding: 8px;
+    border-radius: 30px;
+}
+.stTabs [data-baseweb="tab"] {
+    height: 45px;
+    border-radius: 20px;
+    background-color: transparent;
+    color: #81D4FA;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+}
+.stTabs [aria-selected="true"] {
+    background-color: #4FC3F7 !important;
+    color: #01579B !important;
+    border: none !important;
+    box-shadow: 0 0 15px rgba(79, 195, 247, 0.6);
+}
+
+/* 按鈕樣式：珊瑚紅 (對比色) */
+.stButton>button { 
+    background: linear-gradient(45deg, #FF7043, #F4511E) !important; 
+    color: white !important; 
+    border: none !important; 
+    border-radius: 12px !important; 
+    font-size: 18px !important; 
+    font-weight: 700 !important; 
+    box-shadow: 0 4px 0 #BF360C !important; /* 立體感 */
+    transition: all 0.1s ease !important;
+}
+.stButton>button:active { 
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #BF360C !important;
+}
+
+/* 測驗卡片：半透明磨砂玻璃 */
+.quiz-card { 
+    background: rgba(255, 255, 255, 0.95); 
+    border: 2px solid #4FC3F7; 
+    padding: 25px; 
+    border-radius: 15px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: #01579B;
+}
+.quiz-tag { 
+    background: #0277BD; 
+    color: #FFF; 
+    padding: 5px 12px; 
+    border-radius: 8px; 
+    font-weight: bold; 
+    font-size: 14px; 
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* 翻譯區塊 */
+.zh-translation-block { 
+    background: rgba(2, 119, 189, 0.3); 
+    border-left: 4px solid #FF7043;
+    border-radius: 8px;
+    padding: 15px; 
+    color: #E1F5FE; 
+    font-size: 16px; 
+    line-height: 1.8; 
+    font-family: 'Noto Sans TC', monospace; 
+}
 </style>
 """, unsafe_allow_html=True)
 
 # --- 3. 核心技術：沙盒渲染引擎 ---
 def get_html_card(item, type="word"):
-    pt = "100px" if type == "full_amis_block" else "80px"
-    mt = "-40px" if type == "full_amis_block" else "-30px" 
+    pt = "80px" if type == "full_amis_block" else "60px"
+    mt = "-20px" if type == "full_amis_block" else "-10px" 
 
     style_block = f"""<style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap');
-        body {{ background-color: transparent; color: #1B5E20; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 5px; padding-top: {pt}; overflow-x: hidden; }}
-        .interactive-word {{ position: relative; display: inline-block; border-bottom: 2px solid #2E7D32; cursor: pointer; margin: 0 3px; color: #1B5E20; transition: 0.3s; font-size: 19px; font-weight: 600; }}
-        .interactive-word:hover {{ color: #E65100; border-bottom-color: #E65100; }}
-        .interactive-word .tooltip-text {{ visibility: hidden; min-width: 80px; background-color: #1B5E20; color: #FFF; text-align: center; border-radius: 8px; padding: 8px; position: absolute; z-index: 100; bottom: 145%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Nunito', 'Noto Sans TC', sans-serif; font-weight: 700; }}
+        @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Noto+Sans+TC:wght@400;700&display=swap');
+        body {{ background-color: transparent; color: #01579B; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 10px; padding-top: {pt}; overflow-x: hidden; }}
+        
+        /* 互動單字：海洋氣泡 */
+        .interactive-word {{ 
+            position: relative; 
+            display: inline-block; 
+            border-bottom: 2px dashed #0288D1;
+            cursor: pointer; 
+            margin: 0 4px; 
+            color: #0277BD; 
+            transition: 0.3s; 
+            font-size: 20px; 
+            font-weight: 700; 
+            font-family: 'Bubblegum Sans', sans-serif;
+        }}
+        .interactive-word:hover {{ color: #FF7043; border-bottom-color: #FF7043; transform: translateY(-2px); }}
+        
+        /* Tooltip */
+        .interactive-word .tooltip-text {{ 
+            visibility: hidden; 
+            min-width: 80px; 
+            background-color: #01579B; 
+            color: #FFF; 
+            text-align: center; 
+            border-radius: 8px; 
+            padding: 8px; 
+            position: absolute; 
+            z-index: 100; 
+            bottom: 140%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            opacity: 0; 
+            transition: opacity 0.3s; 
+            font-size: 14px; 
+            white-space: nowrap; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }}
         .interactive-word:hover .tooltip-text {{ visibility: visible; opacity: 1; }}
-        .play-btn-inline {{ background: #2E7D32; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
-        .play-btn-inline:hover {{ background: #E65100; transform: scale(1.1); }}
-        .word-card-static {{ background: #FFFFFF; border: 1px solid #A5D6A7; border-left: 6px solid #1B5E20; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: {mt}; height: 100px; box-sizing: border-box; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }}
-        .wc-root-tag {{ font-size: 12px; background: #E8F5E9; color: #1B5E20; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; font-family: 'Nunito', 'Noto Sans TC', sans-serif; }}
-        .wc-amis {{ color: #1B5E20; font-size: 26px; font-weight: 900; margin: 2px 0; font-family: 'Nunito', sans-serif; }}
-        .wc-zh {{ color: #5D4037; font-size: 16px; font-weight: 500; }}
-        .play-btn-large {{ background: #F1F8E9; border: 2px solid #1B5E20; color: #1B5E20; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
-        .play-btn-large:hover {{ background: #1B5E20; color: #FFF; }}
-        .amis-full-block {{ line-height: 2.2; font-size: 18px; margin-top: {mt}; }}
-        .sentence-row {{ margin-bottom: 12px; display: block; }}
+        
+        /* 播放按鈕 */
+        .play-btn-inline {{ background: #FF7043; border: none; color: #FFF; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; vertical-align: middle; }}
+        .play-btn-inline:hover {{ background: #F4511E; transform: scale(1.1); }}
+        
+        /* 單字卡 */
+        .word-card-static {{ 
+            background: #FFFFFF; 
+            border-radius: 15px; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: {mt}; 
+            height: 100px; 
+            box-sizing: border-box; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            border-left: 6px solid #0288D1;
+        }}
+        .wc-root-tag {{ font-size: 12px; background: #E1F5FE; color: #0277BD; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; }}
+        .wc-amis {{ color: #01579B; font-size: 26px; font-weight: 700; margin: 2px 0; font-family: 'Bubblegum Sans', sans-serif; }}
+        .wc-zh {{ color: #546E7A; font-size: 16px; font-weight: 500; }}
+        
+        .play-btn-large {{ background: #E1F5FE; border: 2px solid #0288D1; color: #0288D1; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; font-size: 20px; transition: 0.2s; }}
+        .play-btn-large:hover {{ background: #0288D1; color: #FFF; }}
+        
+        .amis-full-block {{ line-height: 2.4; font-size: 18px; margin-top: {mt}; text-align: left; padding: 0 5px; }}
+        .sentence-row {{ margin-bottom: 12px; display: block; border-bottom: 1px solid #E1F5FE; padding-bottom: 8px; }}
+        .sentence-row:last-child {{ border-bottom: none; }}
     </style>
     <script>
         function speak(text) {{ window.speechSynthesis.cancel(); var msg = new SpeechSynthesisUtterance(); msg.text = text; msg.lang = 'id-ID'; msg.rate = 0.9; window.speechSynthesis.speak(msg); }}
@@ -135,7 +263,7 @@ def get_html_card(item, type="word"):
         v = item
         body = f"""<div class="word-card-static">
             <div>
-                <div style="margin-bottom:5px;"><span class="wc-root-tag">ROOT: {v['root']}</span> <span style="font-size:12px; color:#757575;">({v['root_zh']})</span></div>
+                <div style="margin-bottom:5px;"><span class="wc-root-tag">ROOT: {v['root']}</span> <span style="font-size:12px; color:#90A4AE;">({v['root_zh']})</span></div>
                 <div class="wc-amis">{v['emoji']} {v['amis']}</div>
                 <div class="wc-zh">{v['zh']}</div>
             </div>
@@ -186,7 +314,7 @@ def get_html_card(item, type="word"):
             parts.append(chunk)
             
         full_js = s['amis'].replace("'", "\\'")
-        body = f'<div style="font-size: 18px; line-height: 1.6; margin-top: {mt};">{" ".join(parts)}</div><button style="margin-top:10px; background:#1B5E20; border:none; color:#FFF; padding:6px 15px; border-radius:8px; cursor:pointer; font-family:Nunito; font-weight:700; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" onclick="speak(`{full_js}`)">▶ PLAY AUDIO</button>'
+        body = f'<div style="font-size: 18px; line-height: 1.8; margin-top: {mt};">{" ".join(parts)}</div><button style="margin-top:10px; background:#0288D1; border:none; color:#FFF; padding:6px 15px; border-radius:8px; cursor:pointer; font-family:Bubblegum Sans; font-weight:700; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" onclick="speak(`{full_js}`)">▶ PLAY AUDIO</button>'
 
     return header + body + "</body></html>"
 
@@ -204,116 +332,94 @@ def generate_quiz():
     q2 = random.choice(VOCABULARY)
     q2_opts = [q2['amis']] + [v['amis'] for v in random.sample([x for x in VOCABULARY if x != q2], 2)]
     random.shuffle(q2_opts)
-    questions.append({"type": "trans", "tag": "🧩 中翻阿", "text": f"請選擇「<span style='color:#2E7D32'>{q2['zh']}</span>」的阿美語", "correct": q2['amis'], "options": q2_opts})
+    questions.append({"type": "trans", "tag": "🧩 中翻阿", "text": f"請選擇「<span style='color:#FF7043'>{q2['zh']}</span>」的阿美語", "correct": q2['amis'], "options": q2_opts})
     
-    # 3. 阿翻中
-    q3 = random.choice(VOCABULARY)
-    q3_opts = [q3['zh']] + [v['zh'] for v in random.sample([x for x in VOCABULARY if x != q3], 2)]
-    random.shuffle(q3_opts)
-    questions.append({"type": "trans_a2z", "tag": "🔄 阿翻中", "text": f"單字 <span style='color:#2E7D32'>{q3['amis']}</span> 的意思是？", "correct": q3['zh'], "options": q3_opts})
+    # 3. 數學題 (Pina)
+    q3_data = {"text": "Pina ko wa'ay no 'orang? (龍蝦有幾隻腳？)", "ans": "Mo^etep", "note": "Mo^etep = 10"}
+    questions.append({"type": "math", "tag": "🔢 數學時間", "text": f"{q3_data['text']}", "correct": "Mo^etep", "options": ["Mo^etep", "Cecay", "Tosa"], "note": q3_data['note']})
 
-    # 4. 詞根偵探
-    q4 = random.choice(VOCABULARY)
-    other_roots = list(set([v['root'] for v in VOCABULARY if v['root'] != q4['root']]))
-    if len(other_roots) < 2: other_roots += ["roma", "lalan", "cidal"]
-    q4_opts = [q4['root']] + random.sample(other_roots, 2)
-    random.shuffle(q4_opts)
-    questions.append({"type": "root", "tag": "🧬 詞根偵探", "text": f"單字 <span style='color:#2E7D32'>{q4['amis']}</span> 的詞根是？", "correct": q4['root'], "options": q4_opts, "note": f"詞根意思：{q4['root_zh']}"})
-    
-    # 5. 語感聽解
-    q5 = random.choice(STORY_DATA)
-    questions.append({"type": "listen_sent", "tag": "🔊 語感聽解", "text": "請聽句子，選擇正確的中文翻譯", "audio": q5['amis'], "correct": q5['zh'], "options": [q5['zh']] + [s['zh'] for s in random.sample([x for x in STORY_DATA if x != q5], 2)]})
+    # 4. 味覺題 (Masamaan)
+    q4_data = {"text": "Masamaan nanomen ko nanom no riyar?", "ans": "Arenim", "note": "Arenim = 鹹的"}
+    questions.append({"type": "taste", "tag": "👅 味覺測試", "text": f"海水的味道？<br>{q4_data['text']}", "correct": "Arenim", "options": ["Arenim", "Cici'", "Cilemin"], "note": q4_data['note']})
 
-    # 6. 句型翻譯
+    # 5. 句型翻譯
     q6 = random.choice(STORY_DATA)
     q6_opts = [q6['amis']] + [s['amis'] for s in random.sample([x for x in STORY_DATA if x != q6], 2)]
     random.shuffle(q6_opts)
-    questions.append({"type": "sent_trans", "tag": "📝 句型翻譯", "text": f"請選擇中文「<span style='color:#2E7D32'>{q6['zh']}</span>」對應的阿美語", "correct": q6['amis'], "options": q6_opts})
+    questions.append({"type": "sent_trans", "tag": "📝 句型翻譯", "text": f"請選擇中文「<span style='color:#FF7043'>{q6['zh']}</span>」對應的阿美語", "correct": q6['amis'], "options": q6_opts})
 
-    # 7. 克漏字
-    q7 = random.choice(STORY_DATA)
-    words = q7['amis'].split()
-    valid_indices = []
-    for i, w in enumerate(words):
-        clean_w = re.sub(r"[^\w']", "", w).lower()
-        if clean_w in VOCAB_MAP:
-            valid_indices.append(i)
-    
-    if valid_indices:
-        target_idx = random.choice(valid_indices)
-        target_raw = words[target_idx]
-        target_clean = re.sub(r"[^\w']", "", target_raw).lower()
-        
-        words_display = words[:]
-        words_display[target_idx] = "______"
-        q_text = " ".join(words_display)
-        
-        correct_ans = target_clean
-        distractors = [k for k in VOCAB_MAP.keys() if k != correct_ans and len(k) > 2]
-        if len(distractors) < 2: distractors += ["kako", "ira"]
-        opts = [correct_ans] + random.sample(distractors, 2)
-        random.shuffle(opts)
-        
-        questions.append({"type": "cloze", "tag": "🕳️ 文法克漏字", "text": f"請填空：<br><span style='color:#1B5E20; font-size:18px;'>{q_text}</span><br><span style='color:#5D4037; font-size:14px;'>{q7['zh']}</span>", "correct": correct_ans, "options": opts})
-    else:
-        questions.append(questions[0]) 
-
-    questions.append(random.choice(questions[:4])) 
     random.shuffle(questions)
-    return questions
+    return questions[:5]
 
 def play_audio_backend(text):
     try:
         tts = gTTS(text=text, lang='id'); fp = BytesIO(); tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
     except: pass
 
-# --- 5. UI 呈現層 (修正重點：使用 components.html 隔離渲染標題) ---
-# 這裡使用 iframe 技術，Streamlit 的 CSS 無法干擾這裡面的顏色
+# --- 5. UI 呈現層 (使用 components.html 隔離渲染標題) ---
+# 主題：深海探險 (Deep Sea Explorer)
 header_html = """
 <!DOCTYPE html>
 <html>
 <head>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&family=Noto+Sans+TC:wght@700&display=swap');
-        body { margin: 0; padding: 0; background-color: transparent; font-family: 'Noto Sans TC', sans-serif; text-align: center; }
+        @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Noto+Sans+TC:wght@700&display=swap');
+        body { margin: 0; padding: 0; background-color: transparent; font-family: 'Noto Sans TC', sans-serif; text-align: center; overflow: hidden; }
         .container {
-            background: linear-gradient(180deg, #1B5E20 0%, #0D3310 100%);
-            border-bottom: 6px solid #5D4037;
-            border-radius: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            color: #FFFFFF; /* 強制白色 */
+            color: #E1F5FE;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
         }
+        /* 氣泡動畫 */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 4s infinite ease-in-out;
+        }
+        .b1 { width: 40px; height: 40px; left: 10%; bottom: -20px; animation-duration: 5s; }
+        .b2 { width: 20px; height: 20px; right: 20%; bottom: -10px; animation-duration: 3s; }
+        .b3 { width: 60px; height: 60px; left: 80%; bottom: -30px; animation-duration: 6s; }
+        
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
         h1 {
-            font-family: 'Nunito', sans-serif;
-            color: #FFFFFF !important; /* 強制白色 */
+            font-family: 'Bubblegum Sans', cursive;
+            color: #FFFFFF;
             font-size: 48px;
-            margin: 0 0 10px 0;
-            text-shadow: 3px 3px 0 #000000;
+            margin: 0 0 5px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             letter-spacing: 2px;
         }
         .subtitle {
-            color: #FFD54F; /* 強制亮黃色 */
-            border: 1px solid #FFD54F;
-            background: rgba(0,0,0,0.3);
+            color: #FFCCBC;
+            background: rgba(0,0,0,0.2);
             border-radius: 20px;
             padding: 5px 20px;
             display: inline-block;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
         }
         .footer {
             margin-top: 10px;
             font-size: 12px;
-            color: #A5D6A7;
+            color: #81D4FA;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>O Hekal</h1>
-        <div class="subtitle">第 9 課：大自然</div>
-        <div class="footer">Code-CRF v6.5 | Theme: Wilderness High Contrast</div>
+        <div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+        <h1>O riyar</h1>
+        <div class="subtitle">第 9 課：海 (生物與味道)</div>
+        <div class="footer">Theme: Deep Sea Explorer 🤿</div>
     </div>
 </body>
 </html>
@@ -322,17 +428,17 @@ header_html = """
 components.html(header_html, height=220)
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🏞️ 互動課文", 
-    "⛰️ 核心單字", 
+    "🌊 互動課文", 
+    "🦞 核心單字", 
     "🧬 句型解析", 
-    "⚔️ 實戰測驗"
+    "🤿 實戰測驗"
 ])
 
 with tab1:
     st.markdown("### // 文章閱讀")
     st.caption("👆 點擊單字可聽發音並查看翻譯")
     
-    st.markdown("""<div style="background:#FFFFFF; padding:10px; border: 2px solid #A5D6A7; border-radius:12px;">""", unsafe_allow_html=True)
+    st.markdown("""<div style="background:rgba(255,255,255,0.9); padding:10px; border-radius:15px; border: 2px solid #4FC3F7;">""", unsafe_allow_html=True)
     components.html(get_html_card(STORY_DATA, type="full_amis_block"), height=400, scrolling=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -345,17 +451,21 @@ with tab1:
 
 with tab2:
     st.markdown("### // 單字與詞根")
-    for v in VOCABULARY:
-        components.html(get_html_card(v, type="word"), height=150)
+    col1, col2 = st.columns(2)
+    for i, v in enumerate(VOCABULARY):
+        with col1 if i % 2 == 0 else col2:
+            components.html(get_html_card(v, type="word"), height=130)
 
 with tab3:
     st.markdown("### // 語法結構分析")
     for s in SENTENCES:
-        st.markdown("""<div style="background:#FFFFFF; padding:15px; border:1px dashed #2E7D32; border-radius: 12px; margin-bottom:15px;">""", unsafe_allow_html=True)
+        st.markdown("""<div style="background:#FFFFFF; padding:20px; border-radius: 15px; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">""", unsafe_allow_html=True)
         components.html(get_html_card(s, type="sentence"), height=160)
         st.markdown(f"""
-        <div style="color:#1B5E20; font-size:16px; margin-bottom:10px; border-top:1px solid #C8E6C9; padding-top:10px;">{s['zh']}</div>
-        <div style="color:#2E7D32; font-size:14px; line-height:1.8; border-top:1px dashed #C8E6C9; padding-top:5px;"><span style="color:#1B5E20; font-family:Nunito; font-weight:bold;">ANALYSIS:</span> {s.get('note', '')}</div>
+        <div style="color:#01579B; font-size:16px; margin-bottom:10px; border-top:2px solid #E1F5FE; padding-top:10px; font-weight:bold;">{s['zh']}</div>
+        <div style="color:#455A64; font-size:14px; line-height:1.8; background:#E1F5FE; padding:10px; border-radius:10px;">
+            <span style="color:#0277BD; font-weight:bold;">💡 NOTE:</span> {s.get('note', '')}
+        </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -366,21 +476,30 @@ with tab4:
     
     if st.session_state.quiz_step < len(st.session_state.quiz_questions):
         q = st.session_state.quiz_questions[st.session_state.quiz_step]
-        st.markdown(f"""<div class="quiz-card"><div style="margin-bottom:10px;"><span class="quiz-tag">{q['tag']}</span> <span style="color:#5D4037;">Q{st.session_state.quiz_step + 1}</span></div><div style="font-size:18px; color:#1B5E20; margin-bottom:10px;">{q['text']}</div></div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div class="quiz-card">
+            <span class="quiz-tag">{q['tag']}</span>
+            <div style="font-size:20px; color:#01579B; margin-bottom:20px; font-weight:bold;">{q['text']}</div>
+        </div>""", unsafe_allow_html=True)
+        
         if 'audio' in q: play_audio_backend(q['audio'])
+        
         opts = q['options']; cols = st.columns(min(len(opts), 3))
         for i, opt in enumerate(opts):
             with cols[i % 3]:
                 if st.button(opt, key=f"q_{st.session_state.quiz_step}_{i}"):
                     if opt.lower() == q['correct'].lower():
-                        st.success("✅ 正確 (Correct)"); st.session_state.quiz_score += 1
+                        st.success("✅ Fangcal! (Correct)"); st.session_state.quiz_score += 1
                     else:
-                        st.error(f"❌ 錯誤 - 正解: {q['correct']}"); 
+                        st.error(f"❌ Caay ka matira... 正解: {q['correct']}"); 
                         if 'note' in q: st.info(q['note'])
                     time.sleep(1.5); st.session_state.quiz_step += 1; st.rerun()
     else:
-        st.markdown(f"""<div style="text-align:center; padding:30px; border:4px solid #1B5E20; border-radius:15px; background:#FFFFFF;"><h2 style="color:#1B5E20; font-family:Nunito;">MISSION COMPLETE</h2><p style="font-size:20px; color:#2E7D32;">得分: {st.session_state.quiz_score} / {len(st.session_state.quiz_questions)}</p></div>""", unsafe_allow_html=True)
-        if st.button("🔄 重新挑戰 (Reboot)"): del st.session_state.quiz_questions; st.rerun()
+        st.markdown(f"""<div style="text-align:center; padding:40px; border-radius:20px; background:rgba(255,255,255,0.9);">
+            <h1 style="color:#FF7043; font-family:Bubblegum Sans;">Tada Mafana' Kiso!</h1>
+            <p style="font-size:22px; color:#0277BD;">得分: {st.session_state.quiz_score} / {len(st.session_state.quiz_questions)}</p>
+            <p style="color:#546E7A;">你真厲害！</p>
+        </div>""", unsafe_allow_html=True)
+        if st.button("🔄 再玩一次 (Replay)"): del st.session_state.quiz_questions; st.rerun()
 
 st.markdown("---")
-st.caption("Powered by Code-CRF v6.5 | Architecture: Chief Architect")
+st.caption("Powered by Code-CRF v7.0 | Theme: Deep Sea 🌊")
